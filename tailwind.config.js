@@ -29,6 +29,7 @@ module.exports = {
       checkedGreen:'#2bd4bd',
       customcolor1: '#333a49',
       customcolortext1:'#b3c5ef',
+      bghover:'#3b82f680',
       crayon:'#f4c152',
       customchampColor1:'#0f1729',
       customTabColor1:'#0e1525',

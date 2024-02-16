@@ -1,5 +1,25 @@
 
 <div class="flex justify-between py-5">
-  <input type="button" value="Filter" class="rounded-lg border-2 border-indigo-500 py-2 px-5"/>
+  <div>
+    <input type="button" value="Filter" class="rounded-lg border-2 border-indigo-500 py-2 px-5 m-1" {{on "click" this.setfilter}}/>
+    {{#if this.showfilter }}
+      <ul class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 absolute rounded bg-customchampColor1">
+            <li class="px-6 py-3 text-left font-medium uppercase tracking-wider text-lg font-black leading-4 rounded hover:bg-bghover">
+              <label for="allButton">All</label>
+              <input type="button" id="allButton" title="All"  {{on "click" this.filterByAll}}/>
+            </li>
+            <li class="px-6 py-3 text-left font-medium uppercase tracking-wider text-lg font-black leading-4 hover:bg-bghover" >
+              <label for="pendingButton">Pending</label>
+              <input type="button" id="pendingButton" title="Pending" {{on "click" this.filterByPending}}/>
+            </li>
+            <li class="px-6 py-3 text-left font-medium uppercase tracking-wider text-lg font-black leading-4 hover:bg-bghover" >
+              <label for="CompletedButton">Completed</label>
+              <input type="button" id="CompletedButton" title="Completed" {{on "click" this.filterByCompleted}}/>
+            </li>
+      </ul>
+    {{/if}}
+  </div>
   <input type="button" value="Delete" class="rounded-lg border-2 border-indigo-500 py-2 px-5" {{on "click" @suppalltask}}/>
 </div>
+
+
