@@ -29,6 +29,12 @@ export default class TasksComponent extends Component<TasksSignature> {
   @tracked
   isAded = false;
 
+  @tracked
+  bannerMessage = "";
+
+  @tracked
+  bannerBgColor = "";
+
    @action
   setaded(value: boolean) {
     this.isAded = value;
@@ -37,6 +43,8 @@ export default class TasksComponent extends Component<TasksSignature> {
   @action
   addTask(name: string, date: string) {
     if(this.userIsmodifyingATask){
+      this.bannerMessage = "Task modified successfully";
+      this.bannerBgColor = "bg-crayon";
       const task = this.allTasks[this.taskActuallyModifyingIndex]!;
       this.allTasks[this.taskActuallyModifyingIndex] = { name, date, status: this.defaultStatus, hide: true};
       this.allTasks = [...this.allTasks];
@@ -45,8 +53,11 @@ export default class TasksComponent extends Component<TasksSignature> {
       this.taskActuallyModifyingIndex = 0;
     }
     else{
+      this.bannerMessage  = "Task added successfully";
+      this.bannerBgColor = "bg-checkedGreen";
       this.allTasks = [...this.allTasks, { name, date, status: this.defaultStatus, hide: true}];
     }
+    this.messageCouldown();
   }
 
   @action
@@ -71,6 +82,9 @@ export default class TasksComponent extends Component<TasksSignature> {
      this.allTasks.splice(index, 1);
      this.allTasks = [...this.allTasks];
      this.filterByAll();
+     this.bannerMessage  = "Task deleted successfully";
+     this.bannerBgColor = "bg-deleteRed";
+     this.messageCouldown();
   }
 
   @action
@@ -167,13 +181,17 @@ export default class TasksComponent extends Component<TasksSignature> {
       }
       this.taskname = "";
       this.date = "";
-      this.setaded(true);
-      setTimeout(() => {
-        this.setaded(false);
-      }, 3 * 1000);
+      this.messageCouldown();
     }
     else{
       alert("Please enter a task name");
     }
+  }
+
+  messageCouldown(){
+    this.setaded(true);
+    setTimeout(() => {
+      this.setaded(false);
+    }, 3 * 1000);
   }
 }

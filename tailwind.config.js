@@ -27,6 +27,7 @@ module.exports = {
       error: '#D72F33',
       warn: '#ffcc00',
       checkedGreen:'#2bd4bd',
+      deleteRed:'#fb6f84',
       customcolor1: '#333a49',
       customcolortext1:'#b3c5ef',
       bghover:'#3b82f680',
