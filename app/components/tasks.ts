@@ -45,7 +45,6 @@ export default class TasksComponent extends Component<TasksSignature> {
     if(this.userIsmodifyingATask){
       this.bannerMessage = "Task modified successfully";
       this.bannerBgColor = "bg-crayon";
-      const task = this.allTasks[this.taskActuallyModifyingIndex]!;
       this.allTasks[this.taskActuallyModifyingIndex] = { name, date, status: this.defaultStatus, hide: true};
       this.allTasks = [...this.allTasks];
       this.filterByAll();
@@ -69,8 +68,9 @@ export default class TasksComponent extends Component<TasksSignature> {
   }
 
   @action
-  SuppTask(task: Task) {
+  SuppTask() {
      let index = 0;
+     // use find(). attention au shadowing de la variable
     this.allTasks.map((task) => {
        if (task.name === name && task.date === date) {
          index = this.allTasks.indexOf(task);
@@ -84,6 +84,7 @@ export default class TasksComponent extends Component<TasksSignature> {
      this.filterByAll();
      this.bannerMessage  = "Task deleted successfully";
      this.bannerBgColor = "bg-deleteRed";
+     // run.later
      this.messageCouldown();
   }
 
@@ -118,6 +119,7 @@ export default class TasksComponent extends Component<TasksSignature> {
   filterByPending(){
     let Taskindex = 0;
     this.allTasks.forEach((task) => {
+      // this.allTasks[Taskindex] = { ...task, hide: !task.status };
       if (task.status == false) {
         this.allTasks[Taskindex] = { ...task, hide: true };
       }
