@@ -5,11 +5,11 @@
       <Messagewhentaskaded @aded={{this.aded}} @setaded={{this.setaded}}/>
     </div>
     <div>
-      <TaskComponent @addTask={{this.addTask}} @setaded={{this.setaded}}/>
+      <TaskComponent @taskname={{this.taskname}} @date={{this.date}} @changedata={{this.changedata}} @changedate={{this.changedate}} @add={{this.add}}/>
     </div>
     <div>
       <Calendarcomponent @filterByAll={{this.filterByAll}} @filterByPending={{this.filterByPending}} @filterByCompleted={{this.filterByCompleted}} @suppalltask={{this.SuppAllTask}}/>
-      <TabComponent @tasks={{this.allTasks}} @changeStatus={{this.changeStatus}} @suppTask={{this.SuppTask}} />
+      <TabComponent @tasks={{this.allTasks}} @changeStatus={{this.changeStatus}} @suppTask={{this.SuppTask}} @modify={{this.modify}}/>
     </div>
   </div>
 </div>

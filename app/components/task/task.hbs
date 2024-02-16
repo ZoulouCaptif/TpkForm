@@ -13,7 +13,7 @@
           <img src="../../public/assets/images/corbeille.png" alt="">
           <img src="../../public/assets/images/crayon.png" alt=""> --}}
           <button class="bg-checkedGreen hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="button"{{on "click" (fn @changeStatus @index)}} ><img src="/assets/icons/check-svgrepo-com.svg" alt="Check" class="w-4"/></button>
-          <button class="bg-crayon hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="button" > <img src="/assets/icons/pen-svgrepo-com.svg" alt="Pen" class="w-4"/></button>
+          <button class="bg-crayon hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="button" {{on "click" (fn @modify @index)}}> <img src="/assets/icons/pen-svgrepo-com.svg" alt="Pen" class="w-4"/></button>
           <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" type="button"{{on "click" (fn @suppTask @task)}}  > <img src="/assets/icons/trash-can-svgrepo-com.svg" alt="Trashcan" class="w-4"/> </button>
         </td>
       </tr>

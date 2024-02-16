@@ -1,3 +1,3 @@
-<input type="text" {{on "input" this.changedata}} value={{this.taskname}} placeholder="add to do" class="rounded-lg border-2 border-indigo-500 p-2 bg-customchampColor1"/>
-<input type="date" {{on "change" this.changedate}} value={{this.date}} class="pl-3 rounded-lg border-2 border-indigo-500 p-2 bg-customchampColor1"/>
-<input type="button" id="addButton" {{on "click" this.add}} value="+" class="rounded-lg border-2 border-indigo-500 p-2 text-black bg-deleteadd"/>
+<input type="text" {{on "input" @changedata}} value={{@taskname}} placeholder="add to do" class="rounded-lg border-2 border-indigo-500 p-2 bg-customchampColor1"/>
+<input type="date" {{on "change" @changedate}} value={{@date}} class="pl-3 rounded-lg border-2 border-indigo-500 p-2 bg-customchampColor1"/>
+<input type="button" id="addButton" {{on "click" @add}} value="+" class="rounded-lg border-2 border-indigo-500 p-2 text-black bg-deleteadd"/>
