@@ -15,11 +15,8 @@
       </th>
     </tr>
   </thead>
-  {{log 'task' @tasks}}
   <tbody class="bg-customchampColor1 divide-y divide-gray-200">
     {{#each @tasks as |task index|}}
-      {{log 't' task}}
-      {{task.status}}
       <Task::Task @task={{task}} @changeStatus={{@changeStatus}} @index={{index}} @suppTask={{@suppTask}}/>
     {{/each}}
   </tbody>

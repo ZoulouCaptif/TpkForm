@@ -8,8 +8,7 @@
       <TaskComponent @addTask={{this.addTask}} @setaded={{this.setaded}}/>
     </div>
     <div>
-      {{get (get this.allTasks 0) "status"}}
-      <Calendarcomponent/>
+      <Calendarcomponent @suppalltask={{this.SuppAllTask}}/>
       <TabComponent @tasks={{this.allTasks}} @changeStatus={{this.changeStatus}} @suppTask={{this.SuppTask}}/>
     </div>
   </div>

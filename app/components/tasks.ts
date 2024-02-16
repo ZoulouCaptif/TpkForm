@@ -36,23 +36,27 @@ export default class TasksComponent extends Component<TasksSignature> {
   }
 
   @action
-  changeStatus(task: Task) {
-    task.name = task.name + "!";
-    task.status = !task.status;
+  changeStatus(index: number) {
+    const task = this.allTasks[index]!;
+    this.allTasks[index] = { ...task, status: !task.status };
     this.allTasks = [...this.allTasks];
-
   }
 
   @action
   SuppTask(task: Task) {
-    // let index = 0;
-    // this.allTasks.map((task) => {
-    //   if (task.name === name && task.date === date) {
-    //     index = this.allTasks.indexOf(task);
-    //   }
-    // });
-    // this.allTasks.splice(index, 1);
-    // this.allTasks = [...this.allTasks];
+     let index = 0;
+    this.allTasks.map((task) => {
+       if (task.name === name && task.date === date) {
+         index = this.allTasks.indexOf(task);
+       }
+     });
+     this.allTasks.splice(index, 1);
+     this.allTasks = [...this.allTasks];
+  }
+
+  @action
+  SuppAllTask() {
+     this.allTasks = [];
   }
 
   @action
