@@ -1,0 +1,16 @@
+<div class="w-screen h-screen flex justify-center items-center font-mono">
+  <div class="flex flex-col justify-center items-center rounded-lg border-2 border-indigo-500 p-2 w-1/2 bg-customcolor1 text-customcolortext1">
+    <h1>ToDoList</h1>
+    <div>
+      <Messagewhentaskaded @aded={{this.aded}} @setaded={{this.setaded}}/>
+    </div>
+    <div>
+      <TaskComponent @addTask={{this.addTask}} @setaded={{this.setaded}}/>
+    </div>
+    <div>
+      {{get (get this.allTasks 0) "status"}}
+      <Calendarcomponent/>
+      <TabComponent @tasks={{this.allTasks}} @changeStatus={{this.changeStatus}} @suppTask={{this.SuppTask}}/>
+    </div>
+  </div>
+</div>

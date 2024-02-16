@@ -1,0 +1,26 @@
+<table class="w-3/2 divide-y divide-gray-200 border-t border-l border-r border-gray-200">
+  <thead class="bg-customTabColor1">
+    <tr>
+      <th scope="col" class="px-6 py-3 text-left font-medium uppercase tracking-wider text-sm font-black leading-4">
+        Task
+      </th>
+      <th scope="col" class="px-6 py-3 text-left font-medium uppercase tracking-wider text-sm font-black leading-4">
+        Due Date
+      </th>
+      <th scope="col" class="px-6 py-3 text-left font-medium uppercase tracking-wider text-sm font-black leading-4">
+        Status
+      </th>
+      <th scope="col" class="px-6 py-3 text-left font-medium uppercase tracking-wider text-sm font-black leading-4">
+        Actions
+      </th>
+    </tr>
+  </thead>
+  {{log 'task' @tasks}}
+  <tbody class="bg-customchampColor1 divide-y divide-gray-200">
+    {{#each @tasks as |task index|}}
+      {{log 't' task}}
+      {{task.status}}
+      <Task::Task @task={{task}} @changeStatus={{@changeStatus}} @index={{index}} @suppTask={{@suppTask}}/>
+    {{/each}}
+  </tbody>
+</table>

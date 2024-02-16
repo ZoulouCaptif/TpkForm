@@ -10,7 +10,7 @@ module.exports = {
   corePlugins: {},
   plugins: [],
   theme: {
-    extends: {
+    extend: {
       screens: {
         lxg: '1140px',
         '2xl': '1600px',
@@ -26,6 +26,14 @@ module.exports = {
       'text-secondary': '#384043',
       error: '#D72F33',
       warn: '#ffcc00',
+      checkedGreen:'#2bd4bd',
+      customcolor1: '#333a49',
+      customcolortext1:'#b3c5ef',
+      crayon:'#f4c152',
+      customchampColor1:'#0f1729',
+      customTabColor1:'#0e1525',
+      customTabColor2:'#0f1729',
+      deleteadd:'#828df8',
       white: colors.white,
       black: colors.black,
       transparent: colors.transparent,
