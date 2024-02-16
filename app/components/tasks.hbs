@@ -8,8 +8,8 @@
       <TaskComponent @addTask={{this.addTask}} @setaded={{this.setaded}}/>
     </div>
     <div>
-      <Calendarcomponent @suppalltask={{this.SuppAllTask}}/>
-      <TabComponent @tasks={{this.allTasks}} @changeStatus={{this.changeStatus}} @suppTask={{this.SuppTask}}/>
+      <Calendarcomponent @filterByAll={{this.filterByAll}} @filterByPending={{this.filterByPending}} @filterByCompleted={{this.filterByCompleted}} @suppalltask={{this.SuppAllTask}}/>
+      <TabComponent @tasks={{this.allTasks}} @changeStatus={{this.changeStatus}} @suppTask={{this.SuppTask}} />
     </div>
   </div>
 </div>

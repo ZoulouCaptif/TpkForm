@@ -4,7 +4,11 @@ import Component from '@glimmer/component';
 
 interface CalendarcomponentSignature {
   // The arguments accepted by the component
-  Args: {};
+  Args: {
+    filterByAll: () => void,
+    filterByPending: () => void,
+    filterByCompleted: () => void,
+  };
   // Any blocks yielded by the component
   Blocks: {
     default: []
@@ -25,16 +29,19 @@ export default class CalendarcomponentComponent extends Component<Calendarcompon
 
   @action
   filterByAll(){
+    this.args.filterByAll()
     this.setfilter()
   }
 
   @action
   filterByPending(){
+    this.args.filterByPending()
     this.setfilter()
   }
 
   @action
   filterByCompleted(){
+    this.args.filterByCompleted()
     this.setfilter()
   }
 

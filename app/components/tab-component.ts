@@ -4,11 +4,7 @@ import { all } from 'rsvp';
 
 interface TabComponentSignature {
   // The arguments accepted by the component
-  Args: {
-    allTasks: { title: string, content: string, status:boolean }[],
-    changeStatus: Function,
-    suppTask: Function;
-  };
+  Args: {};
   // Any blocks yielded by the component
   Blocks: {
     default: []
@@ -17,6 +13,4 @@ interface TabComponentSignature {
   Element: null;
 }
 
-export default class TabComponentComponent extends Component<TabComponentSignature> {
-
-}
+export default class TabComponentComponent extends Component<TabComponentSignature> {}

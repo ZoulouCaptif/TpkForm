@@ -17,7 +17,9 @@
   </thead>
   <tbody class="bg-customchampColor1 divide-y divide-gray-200">
     {{#each @tasks as |task index|}}
-      <Task::Task @task={{task}} @changeStatus={{@changeStatus}} @index={{index}} @suppTask={{@suppTask}}/>
+      {{#if task.hide}}
+      <Task::Task @task={{task}} @changeStatus={{@changeStatus}} @index={{index}} @suppTask={{@suppTask}} @filterByAll={{@filterByAll}}/>
+      {{/if}}
     {{/each}}
   </tbody>
 </table>

@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 interface taskSignature {
   Args:
   {
-    task: { title: string, content: string, status: boolean },
+    task: { title: string, content: string, status: boolean, hide:boolean },
   };
   Blocks: {
     default: []
@@ -16,7 +16,7 @@ export default class TaskComponent extends Component<taskSignature> {
 
   get status() {
     console.log(this.args.task.status)
-    return this.args.task.status? "Done" : "Not Done";
+    return this.args.task.status? "Completed" : "Pending";
   }
 }
 
