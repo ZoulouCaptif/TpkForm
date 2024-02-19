@@ -4,6 +4,8 @@ import { TrackedArray } from 'tracked-built-ins';
 import { tracked } from '@glimmer/tracking';
 import { all } from 'rsvp';
 import date from 'ember-boilerplate/utils/date';
+import { runTask } from 'ember-lifeline';
+
 
 interface TasksSignature {
   // The arguments accepted by the component
@@ -20,14 +22,14 @@ type Task = { name: string, date: string, status:boolean, hide:boolean };
 
 export default class TasksComponent extends Component<TasksSignature> {
   defaultStatus = false;
-  userIsmodifyingATask = false;
-  taskActuallyModifyingIndex = 0;
+  userModifyingTask = false;
+  indexTaskModifying = 0;
 
   @tracked
   allTasks: Task[] = [];
 
   @tracked
-  isAded = false;
+  isAdded = false;
 
   @tracked
   bannerMessage = "";
@@ -36,20 +38,20 @@ export default class TasksComponent extends Component<TasksSignature> {
   bannerBgColor = "";
 
    @action
-  setaded(value: boolean) {
-    this.isAded = value;
+  setAdded(value: boolean) {
+    this.isAdded = value;
   }
 
   @action
   addTask(name: string, date: string) {
-    if(this.userIsmodifyingATask){
+    if(this.userModifyingTask){
       this.bannerMessage = "Task modified successfully";
       this.bannerBgColor = "bg-crayon";
-      this.allTasks[this.taskActuallyModifyingIndex] = { name, date, status: this.defaultStatus, hide: true};
+      this.allTasks[this.indexTaskModifying] = { name, date, status: this.defaultStatus, hide: true};
       this.allTasks = [...this.allTasks];
       this.filterByAll();
-      this.userIsmodifyingATask = false;
-      this.taskActuallyModifyingIndex = 0;
+      this.userModifyingTask = false;
+      this.indexTaskModifying = 0;
     }
     else{
       this.bannerMessage  = "Task added successfully";
@@ -68,16 +70,10 @@ export default class TasksComponent extends Component<TasksSignature> {
   }
 
   @action
-  SuppTask() {
-     let index = 0;
-     // use find(). attention au shadowing de la variable
-    this.allTasks.map((task) => {
-       if (task.name === name && task.date === date) {
-         index = this.allTasks.indexOf(task);
-       }
-     });
-     if (this.userIsmodifyingATask && this.taskActuallyModifyingIndex == index) {
-        this.userIsmodifyingATask = false;
+  SuppTask(task: Task) {
+    let index = this.allTasks.indexOf(task);
+     if (this.userModifyingTask && this.indexTaskModifying == index) {
+        this.userModifyingTask = false;
      }
      this.allTasks.splice(index, 1);
      this.allTasks = [...this.allTasks];
@@ -91,8 +87,8 @@ export default class TasksComponent extends Component<TasksSignature> {
   @action
   SuppAllTask() {
     this.allTasks = [];
-    this.userIsmodifyingATask = false;
-    this.taskActuallyModifyingIndex = 0;
+    this.userModifyingTask = false;
+    this.indexTaskModifying = 0;
     this.filterByAll();
   }
 
@@ -101,8 +97,8 @@ export default class TasksComponent extends Component<TasksSignature> {
     const task = this.allTasks[index]!;
     this.taskname = task.name;
     this.date = task.date;
-    this.userIsmodifyingATask = true;
-    this.taskActuallyModifyingIndex = index;
+    this.userModifyingTask = true;
+    this.indexTaskModifying = index;
   }
 
   @action
@@ -183,7 +179,6 @@ export default class TasksComponent extends Component<TasksSignature> {
       }
       this.taskname = "";
       this.date = "";
-      this.messageCouldown();
     }
     else{
       alert("Please enter a task name");
@@ -191,9 +186,10 @@ export default class TasksComponent extends Component<TasksSignature> {
   }
 
   messageCouldown(){
-    this.setaded(true);
-    setTimeout(() => {
-      this.setaded(false);
-    }, 3 * 1000);
+    console.log("messageCouldown");
+    this.setAdded(true);
+    runTask(this,() => {
+      this.setAdded(false);
+    }, 3000);
   }
 }
