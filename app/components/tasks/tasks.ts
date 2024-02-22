@@ -7,6 +7,7 @@ import date from 'ember-boilerplate/utils/date';
 import { runTask } from 'ember-lifeline';
 
 
+
 interface TasksSignature {
   // The arguments accepted by the component
   Args: {};
@@ -27,6 +28,7 @@ export default class TasksComponent extends Component<TasksSignature> {
 
   @tracked
   allTasks: Task[] = [];
+
 
   @tracked
   isAdded = false;
