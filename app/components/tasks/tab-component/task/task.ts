@@ -15,7 +15,6 @@ interface taskSignature {
 export default class TaskComponent extends Component<taskSignature> {
 
   get status() {
-    console.log(this.args.task.status)
     return this.args.task.status? "Completed" : "Pending";
   }
 }

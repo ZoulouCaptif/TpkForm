@@ -41,4 +41,7 @@ export default class Store extends BaseStore {
 
     return this._fetchManager.createSnapshot(recordIdentifierFor(record)).serialize(options);
   }
+
+
+
 }

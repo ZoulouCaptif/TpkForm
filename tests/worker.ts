@@ -18,7 +18,6 @@ export function setupWorker() {
 export function stopWorker() {
   worker.listHandlers().forEach((handler) => {
     // eslint-disable-next-line no-console
-    console.log(handler.info.header)
   })
   worker.stop();
 }

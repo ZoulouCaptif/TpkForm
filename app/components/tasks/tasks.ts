@@ -1,16 +1,19 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { TrackedArray } from 'tracked-built-ins';
 import { tracked } from '@glimmer/tracking';
-import { all } from 'rsvp';
 import date from 'ember-boilerplate/utils/date';
 import { runTask } from 'ember-lifeline';
+import type Task  from 'ember-boilerplate/interface/Task';
+import store from 'ember-boilerplate/services/store';
+import { inject as Service } from '@ember/service'; //TO FIX ID PROBLEME
 
 
 
 interface TasksSignature {
   // The arguments accepted by the component
-  Args: {};
+  Args: {
+    startTasksTab: Task[];
+  };
   // Any blocks yielded by the component
   Blocks: {
     default: []
@@ -19,15 +22,21 @@ interface TasksSignature {
   Element: null;
 }
 
-type Task = { name: string, date: string, status:boolean, hide:boolean };
-
 export default class TasksComponent extends Component<TasksSignature> {
   defaultStatus = false;
   userModifyingTask = false;
   indexTaskModifying = 0;
 
+  @Service store: Service;
+
   @tracked
   allTasks: Task[] = [];
+
+  @tracked
+  taskname = '';
+
+  @tracked
+  date = '';
 
 
   @tracked
@@ -39,59 +48,70 @@ export default class TasksComponent extends Component<TasksSignature> {
   @tracked
   bannerBgColor = "";
 
+
+  @action
+  updateTasksTab() {
+    this.allTasks = [...this.allTasks, ...this.args.startTasksTab];
+  }
+
    @action
   setAdded(value: boolean) {
     this.isAdded = value;
   }
 
   @action
-  addTask(name: string, date: string) {
+  async addTask(name: string, date: string) {
     if(this.userModifyingTask){
       this.bannerMessage = "Task modified successfully";
       this.bannerBgColor = "bg-crayon";
-      this.allTasks[this.indexTaskModifying] = { name, date, status: this.defaultStatus, hide: true};
+      this.store.peekRecord('task', this.allTasks[this.indexTaskModifying]!.id).destroyRecord();
+      this.store.createRecord('task', {name: name, date: date, status: this.allTasks[this.indexTaskModifying]!.status}).save();
+      this.allTasks[this.indexTaskModifying] = { id :this.allTasks[this.indexTaskModifying]!.id , name, date, status: this.allTasks[this.indexTaskModifying]!.status};
       this.allTasks = [...this.allTasks];
-      this.filterByAll();
       this.userModifyingTask = false;
       this.indexTaskModifying = 0;
     }
     else{
       this.bannerMessage  = "Task added successfully";
       this.bannerBgColor = "bg-checkedGreen";
-      this.allTasks = [...this.allTasks, { name, date, status: this.defaultStatus, hide: true}];
+      this.store.createRecord('task', {name: name, date: date, status: this.defaultStatus}).save();
+      this.filterByAll();
     }
     this.messageCouldown();
   }
 
   @action
   changeStatus(index: number) {
-    const task = this.allTasks[index]!;
+    const task : Task = {date: this.allTasks[index]!.date, name: this.allTasks[index]!.name, status: this.allTasks[index]!.status, id: this.allTasks[index]!.id };
     this.allTasks[index] = { ...task, status: !task.status };
     this.allTasks = [...this.allTasks];
-    this.filterByAll();
+    this.store.peekRecord('task', this.allTasks[index]!.id).save();
   }
 
   @action
-  SuppTask(task: Task) {
-    let index = this.allTasks.indexOf(task);
-     if (this.userModifyingTask && this.indexTaskModifying == index) {
-        this.userModifyingTask = false;
-     }
-     this.allTasks.splice(index, 1);
-     this.allTasks = [...this.allTasks];
-     this.filterByAll();
-     this.bannerMessage  = "Task deleted successfully";
-     this.bannerBgColor = "bg-deleteRed";
-     // run.later
-     this.messageCouldown();
+  SuppTask(index: number) {
+    if (this.userModifyingTask && this.indexTaskModifying == index) {
+      this.userModifyingTask = false;
+    }
+    let taskId = this.allTasks[index]?.id;
+    this.store.peekRecord('task', taskId).destroyRecord();
+    this.indexTaskModifying = index;
+    this.allTasks.splice(index,1 );
+    this.allTasks = [...this.allTasks];
   }
 
   @action
-  SuppAllTask() {
-    this.allTasks = [];
+  async SuppAllTask() {
     this.userModifyingTask = false;
     this.indexTaskModifying = 0;
+    let tasks = await this.store.findAll("task");
+    tasks.forEach((task: Task) => {
+      task.destroyRecord();
+    });
     this.filterByAll();
+    this.bannerMessage  = "Task deleted successfully";
+    this.bannerBgColor = "bg-deleteRed";
+    this.messageCouldown();
   }
 
   @action
@@ -104,60 +124,38 @@ export default class TasksComponent extends Component<TasksSignature> {
   }
 
   @action
-  filterByAll(){
-    let Taskindex = 0;
-    this.allTasks.forEach((task) => {
-      this.allTasks[Taskindex] = { ...task, hide: true };
-      Taskindex++;
+  async filterByAll(){
+    let startTasksTab: Task[] = [];
+    const tasks = await this.args.startTasksTab;
+    tasks.forEach((task: Task) => {
+      startTasksTab = [...startTasksTab, task]
     });
-    this.allTasks = [...this.allTasks];
+    this.allTasks = [...startTasksTab];
   }
 
   @action
-  filterByPending(){
-    let Taskindex = 0;
-    this.allTasks.forEach((task) => {
-      // this.allTasks[Taskindex] = { ...task, hide: !task.status };
-      if (task.status == false) {
-        this.allTasks[Taskindex] = { ...task, hide: true };
+  async filterByPending(){
+    let startTasksTab: Task[] = [];
+    const tasks = await this.store.findAll("task");
+    tasks.forEach((task: Task) => {
+      if(task.status === false){
+        startTasksTab.push({id: task.id, name: task.name, date : task.date, status: task.status});
       }
-      else{
-        this.allTasks[Taskindex] = { ...task, hide: false };
-      }
-      Taskindex++;
     });
-    this.allTasks = [...this.allTasks];
-    console.log("filterByPending");
-    console.log(this.allTasks);
+    this.allTasks = [...startTasksTab];
   }
 
   @action
-  filterByCompleted(){
-    let Taskindex = 0;
-    this.allTasks.forEach((task) => {
-      if (task.status == true) {
-        this.allTasks[Taskindex] = { ...task, hide: true };
+  async filterByCompleted(){
+    let startTasksTab: Task[] = [];
+    const tasks = await this.store.findAll("task");
+    tasks.forEach((task: Task) => {
+      if(task.status === true){
+        startTasksTab.push({id: task.id, name: task.name, date : task.date, status: task.status});
       }
-      else{
-        this.allTasks[Taskindex] = { ...task, hide: false };
-      }
-      Taskindex++;
     });
-    this.allTasks = [...this.allTasks];
-    console.log("filterByCompleted");
-    console.log(this.allTasks);
+    this.allTasks = [...startTasksTab];
   }
-  //#############################################################################################
-  //#############################################################################################
-  //#############################################################################################
-  //#############################################################################################
-
-  @tracked
-  taskname = '';
-
-  @tracked
-  date = '';
-
 
 
   @action
